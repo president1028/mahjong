@@ -51,6 +51,16 @@ def isKong(tilelist):
             return True
     return False
 
+def isDoubleSequence(tilelist):
+    if len(tilelist) == 6:
+        if tilelist[0] + 2 == tilelist[1] + 2 ==  \
+           tilelist[2] + 1 == tilelist[3] + 1 ==  \
+           tilelist[4] == tilelist[5]:
+            return True
+    return False
+
+
+
 def confict():
     pass
 
@@ -74,9 +84,15 @@ def isWinBacktrack(sortedTile):
     if len(sortedTile) == 0:
         return True
     else:
-        if isSequence(sortedTile[0:3]) or isTriplet(sortedTile[0:3]):
+        if isKong(sortedTile[0:4]):
+            del sortedTile[0:4]
+            return isWinBacktrack(sortedTile)
+        elif isSequence(sortedTile[0:3]) or isTriplet(sortedTile[0:3]):
             del sortedTile[0:3]
 #            print sortedTile
+            return isWinBacktrack(sortedTile)
+        elif isDoubleSequence(sortedTile[0:6]):
+            del sortedTile[0:6]
             return isWinBacktrack(sortedTile)
         else:
             return False
@@ -134,10 +150,16 @@ def isSevenPairs(sortedTile):
 ##        print '19   七对   24'
 ##        print '---------------'
 
-
+def isSerialSevenPairs(sortedTile):
+    if isSevenPairs(sortedTile):
+        for i in range(0,12,2):
+            if sortedTile[i] + 1 != sortedTile[i + 2]:
+                return False
+    return True
 
 def isTheThirteenOrphans(sortedTile):
     '''判断是否为十三幺'''
+#    if 
     pass
 
 def isNotSequence(sortedTile):
@@ -302,10 +324,14 @@ if __name__ == '__main__':
     randtile19_1 = [16,16,21,21,4,4,34,34,36,36,30,30,33,33]
     randtile19_2 = [10,10,0,0,20,20,18,18,18,18,8,8,28,28]
     randtile19_3 = [30,30,31,31,32,32,33,33,34,34,35,35,36,36]
+    randtile27 = [10,11,12,0,1,2,20,21,22,20,21,22,22,22]
+    randtile27.sort()
+    randtile48 = [20,20,20,20,30,30,30,30,31,31,31,6,7,8,7,7]
     realtile01 = "{}[](26)<2,13>,23,24,25,13,13"
     simpleTileTest = [randtile00,randtilets1,randtilets2,randtilets3,
     randtilets4,randtilets5,randtile49,randtile68,randtile68Sorted,
-                      randtile19_1,randtile19_2,randtile19_3]
+                      randtile19_1,randtile19_2,randtile19_3,
+                    randtile27,randtile48]
 
 
     
