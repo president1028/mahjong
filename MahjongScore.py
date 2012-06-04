@@ -3,6 +3,8 @@
 __metaclass__ = type
 
 #import MahjongClass as mc
+import MahjongTestCase as mtc
+
 dictMTile = {0:'1C',1:'2C',2:'3C',3:'4C',4:'5C',5:'6C',6:'7C',7:'8C',8:'9C',
          10:'1D',11:'2D',12:'3D',13:'4D',14:'5D',15:'6D',16:'7D',17:'8D',
         18:'9D',20:'1B',21:'2B',22:'3B',23:'4B',24:'5B',25:'6B',26:'7B',
@@ -352,9 +354,21 @@ if __name__ == '__main__':
     listToken = []
 #    isWin(list1,listToken)
 
-    for i in simpleTileTest:
-        listToken = []
-        isWin(i,listToken)
+#    for i in simpleTileTest:
+#        listToken = []
+#        isWin(i,listToken)
+    
+    mConfig = mtc.MahjongConfig()
+    print mConfig.getTestCase()
+    MahjongList
+    print len(mConfig.getTestCase())
+    
+    
+    
+    
+#    print len(mtc.consumer_key)
+    
+    
     
 ##    print isTrump(list1[2:4])
 ##    print isTriplet(list1[2:5])
