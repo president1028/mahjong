@@ -4,6 +4,8 @@ __metaclass__ = type
 
 #import MahjongClass as mc
 import MahjongTestCase as mtc
+import logging
+import logging.config
 
 dictMTile = {0:'1C',1:'2C',2:'3C',3:'4C',4:'5C',5:'6C',6:'7C',7:'8C',8:'9C',
          10:'1D',11:'2D',12:'3D',13:'4D',14:'5D',15:'6D',16:'7D',17:'8D',
@@ -15,6 +17,15 @@ dictMTile = {0:'1C',1:'2C',2:'3C',3:'4C',4:'5C',5:'6C',6:'7C',7:'8C',8:'9C',
 dictScoring = {1:'四风会',49:'碰碰和',19:'七对',True:'未算番',False:'诈和',
 0:'待定'}
 dictPoints = {1:88,49:6,19:24,True:'未算番',False:'诈和',0:'待定'}
+
+LOG_FILENAME = 'MahjongLogging.conf'
+LOG_CONTENT_NAME = 'mahjong_log'
+
+
+def log_init(log_config_filename,logname):
+    logging.config.fileConfig(log_config_filename)
+    logger = logging.getLogger(logname)
+    return logger
 
 def findScoring(scoreNO):
     if dictScoring.has_key(scoreNO):
@@ -86,10 +97,7 @@ def isWinBacktrack(sortedTile):
     if len(sortedTile) == 0:
         return True
     else:
-        if isKong(sortedTile[0:4]):
-            del sortedTile[0:4]
-            return isWinBacktrack(sortedTile)
-        elif isSequence(sortedTile[0:3]) or isTriplet(sortedTile[0:3]):
+        if isSequence(sortedTile[0:3]) or isTriplet(sortedTile[0:3]):
             del sortedTile[0:3]
 #            print sortedTile
             return isWinBacktrack(sortedTile)
@@ -110,7 +118,7 @@ def isWin(sortedTile,listToken):
     
     # 先检测特殊牌型，再查看普通和牌型
     if(isSevenPairs(sortedTile)):
-        print u'七对'.encode('gb2312')
+#        print u'七对'.encode('gb2312')
         return 'QIDUI'
         
     if(isTheThirteenOrphans(sortedTile)):
@@ -130,15 +138,17 @@ def isWin(sortedTile,listToken):
         del tiles[i:i+2]
         if (isWinBacktrack(tiles)):
             tiles = sortedTile[:]
-            print tiles[i],tiles[i+1],
+#            print tiles[i],tiles[i+1],
             del tiles[i:i+2]
-            print tiles,
-            print u'和了'.encode('gb2312')
+#            print tiles,
+#            print u'和了'.encode('gb2312')
+#            mahjong_logger.info(str(sortedTile)+":和了")
             return True
         else:
             continue
 
     print u'诈和!'.encode('gb2312')
+    mahjong_logger.warn(str(sortedTile)+":诈和")
     return False
 
 
@@ -147,6 +157,7 @@ def isSevenPairs(sortedTile):
     for i in range(len(sortedTile)/2):
         if sortedTile[i*2] != sortedTile[i*2+1]:
             return False
+    mahjong_logger.info(str(sortedTile)+":七对")
     return True
 ##        print '番号  番型  番数'
 ##        print '19   七对   24'
@@ -312,97 +323,26 @@ def flatten(nested):
 
 if __name__ == '__main__':
 
-    randtile00 = [30,30,30,31,31,31,32,32,32,33,33,33,35,35]
-    randtilets1 = [1,2,3,12,13,13,13,14,23,24,25,18,18,18]
-    randtilets2 = [1,1,1,2,3,12,12,12,13,13,13,25,25,25]
-    randtilets3 = [1,2,3,3,3,3,4,5,6,6,6,6,7,7]
-    
-    randtilets4 = [1,2,3,12,13,13,13,14,15,16,17,18,18,18]
-    randtilets5 = [1,2,3,4,5,6,13,14,15,16,17,18,18,18]
-    
-    randtile49 = [7,7,7,17,17,17,27,27,27,36,36,36,30,30]
-    randtile68 = [1,2,3,12,13,14,23,24,25,26,26,26,13,13]
-    randtile68Sorted = [1, 2, 3, 12, 13, 13, 13, 14, 23, 24, 25, 26, 26, 26]
-    randtile19_1 = [16,16,21,21,4,4,34,34,36,36,30,30,33,33]
-    randtile19_2 = [10,10,0,0,20,20,18,18,18,18,8,8,28,28]
-    randtile19_3 = [30,30,31,31,32,32,33,33,34,34,35,35,36,36]
-    randtile27 = [10,11,12,0,1,2,20,21,22,20,21,22,22,22]
-    randtile27.sort()
-    randtile48 = [20,20,20,20,30,30,30,30,31,31,31,6,7,8,7,7]
+    mahjong_logger = log_init(LOG_FILENAME,LOG_CONTENT_NAME)
     realtile01 = "{}[](26)<2,13>,23,24,25,13,13"
-    simpleTileTest = [randtile00,randtilets1,randtilets2,randtilets3,
-    randtilets4,randtilets5,randtile49,randtile68,randtile68Sorted,
-                      randtile19_1,randtile19_2,randtile19_3,
-                    randtile27,randtile48]
-
-
     
 ##    tile = analytic(realtile01)
 ##    print randtile68Sorted
-##    isWinPuls(randtile68Sorted)
-
-
-##    isWinPlus(randtile19_2)
-##    for i in range(len(simpleTileTest)):
-##        if 1 <  i < 6:
-##            isWinPlusPlus(simpleTileTest(i))
 
 ##    list1 = [1,2,3,3,3,3,4,5,6,6,6,6,7,7,7]
 ##    list1 = [30,30,30,31,31,31,32,32,32,33,33,33,35,35]
     list2 = [0,1,2,3,4,4,4,5,6,7,8,8,8,8]
     list1 = [1,1,1,2,2,2,3,3,3,4,4,4,5,5]
-    listToken = []
-#    isWin(list1,listToken)
-
-#    for i in simpleTileTest:
-#        listToken = []
-#        isWin(i,listToken)
     
     mConfig = mtc.MahjongConfig()
-    print mConfig.getTestCase()
-    MahjongList
-    print len(mConfig.getTestCase())
+    testCase = mConfig.getTestCase()
+    mTestCases = {}
+    for i in testCase:
+        mTestCases[i[0]] = [int(j) for j in i[1].split(",")]
     
-    
-    
-    
-#    print len(mtc.consumer_key)
-    
-    
-    
-##    print isTrump(list1[2:4])
-##    print isTriplet(list1[2:5])
-##    print isKong(list1[2:6])
-##    print isSequence(list1[5:8])
-    
-    
-##    isWinBacktrack(list1,listToken)
-        
-##    findSequence(randtilets1,listToken)
-##    print listToken
-##    findPKTr(randtilets1,listToken)
-##    print listToken
-    
-##    for i in simpleTileTest:
-##        listToken = ['N']*len(i)
-##        findSequence(i,listToken)
-##        print listToken
-##        findPKTr(i,listToken)
-##        print listToken
-##        ScoreNO = isWinByToken(listToken)
-##        print ScoreNO
-##        print '番号  番型  番数'
-##        print ScoreNO , findScoring(ScoreNO) , findPoints(ScoreNO)
-##        print '---------------'
-
-##    listTokenSet = []
-##    i = 0
-##    while i < 14:
-##        list1 = randtile68[:]
-##        list1[i] = 'X'
-##        listTokenSet.append(list1)
-##        i += 1
-##
-##    for i in listTokenSet:
-##        print i
-     
+    for k in mTestCases:
+        listToken = []
+        i = mTestCases[k]
+        i.sort()
+        print k,
+        isWin(i,listToken)
