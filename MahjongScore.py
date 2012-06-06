@@ -64,16 +64,46 @@ def isKong(tilelist):
             return True
     return False
 
-def isDoubleSequence(tilelist):
+def isDoubleOrCrossOrIncludeTripletSequence(tilelist):
+    '''例如 15,16,16,16,16,17'''
     if len(tilelist) == 6:
         if tilelist[0] + 2 == tilelist[1] + 2 ==  \
            tilelist[2] + 1 == tilelist[3] + 1 ==  \
            tilelist[4] == tilelist[5]:
             return True
+        elif tilelist[0] + 2 == tilelist[1] + 1 ==  \
+           tilelist[2] + 1 == tilelist[3] ==  \
+           tilelist[4] == tilelist[5] - 1:
+            return True
+        elif tilelist[0] + 1 == tilelist[1] ==  \
+           tilelist[2] == tilelist[3] ==  \
+           tilelist[4] == tilelist[5] - 1:
+            return True
+
     return False
 
+def isCrossSequence9(tilelist):
+    '''例如 1,2,3,2,3,4,3,4,5,4,5,6'''
+    if len(tilelist) == 9:
+        if tilelist[0] + 2 == tilelist[1] + 1 ==  \
+           tilelist[2] + 1 == tilelist[3] ==  \
+           tilelist[4] + 0 == tilelist[5] ==  \
+           tilelist[6] - 1 == tilelist[7] - 1 ==  \
+           tilelist[8] - 2:
+            return True
+    return False
 
-
+def isCrossSequence12(tilelist):
+    if len(tilelist) == 12:
+        if tilelist[0] + 2 == tilelist[1] + 1 ==  \
+           tilelist[2] + 1 == tilelist[3] ==  \
+           tilelist[4] + 0 == tilelist[5] ==  \
+           tilelist[6] - 1 == tilelist[7] - 1 ==  \
+           tilelist[8] - 1 == tilelist[9] - 2 ==  \
+           tilelist[10] - 2 == tilelist[11] - 3:
+            return True
+    return False
+    
 def confict():
     pass
 
@@ -92,6 +122,25 @@ def findTrump(sortedTile,listToken=[]):
         tile = sortedTile[i]
         i += 1
 
+#def adjustTile(sortedTileNoTrump):
+# '''重新调整手牌的顺序，让发现顺子更容易 
+#注意，此时已经没有将牌。只有最多12张牌，或者由于吃、碰还剩 3,6,9 张 ''' 
+#    tilepos = 0
+#    while tilepos < len(sortedTileNoTrump):
+#        if isSequence(sortedTileNoTrump[tilepos:tilepos+3] or \
+#        isTriplet(sortedTileNoTrump[tilepos:tilepos+3]:
+#        tilepos += 3
+#        elif 
+#        
+#        tilepos += 1
+#    
+#    
+#    
+#    test = sortedTileNoTrump[0] 
+#    del sortedTileNoTrump[0] 
+#    sortedTileNoTrump.insert(3,test) 
+#    pass
+
 
 def isWinBacktrack(sortedTile):
     if len(sortedTile) == 0:
@@ -101,9 +150,15 @@ def isWinBacktrack(sortedTile):
             del sortedTile[0:3]
 #            print sortedTile
             return isWinBacktrack(sortedTile)
-        elif isDoubleSequence(sortedTile[0:6]):
+        elif isDoubleOrCrossOrIncludeTripletSequence(sortedTile[0:6]):
             del sortedTile[0:6]
             return isWinBacktrack(sortedTile)
+        elif isCrossSequence9(sortedTile[0:9]):
+            del sortedTile[0:9]
+            return isWinBacktrack(sortedTile)
+        elif isCrossSequence12(sortedTile[0:12]):
+            del sortedTile[0:12]
+            return isWinBacktrack(sortedTile)        
         else:
             return False
         
@@ -344,5 +399,12 @@ if __name__ == '__main__':
         listToken = []
         i = mTestCases[k]
         i.sort()
+        k_str = str(k)
+        if k.startswith("tilecase57") or k.startswith("tilecase35") or \
+            k.startswith("tilecase20") or k.startswith("tilecase34") or \
+            k.startswith("tilecase7") or k.startswith("tilecase17") or \
+            k.startswith("tilecase66") or k.startswith("tilecase80") or \
+            k.startswith("tilecase5") or k.startswith("tilecase48"):
+            continue
         print k,
         isWin(i,listToken)
