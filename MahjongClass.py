@@ -41,23 +41,38 @@ class Flower(Tile):
         super(Flower,self).__init__(Mname,Mvalue)
 
 
-class Triplet:
-    def __init__(self,tValue=0,isPong=True):
-        self.tValue = tValue
+class BaseComb:
+    def __init__(self,bvalue = 0):
+        self.bvalue = bvalue
+
+class Triplet(BaseComb):
+    def __init__(self,bValue=0,isPong=True):
+        super(Triplet,self).__init__(bValue)
         self.isPong = isPong
 
-
-class Sequence:
-    def __init__(self,sValue=0,cValue=0,isChow=True):
-        self.sValue = sValue
-        self.cValue = cValue
+class Sequence(BaseComb):
+    def __init__(self,bValue=0,isChow=True):
+        super(Sequence,self).__init__(bValue)
         self.isChow = isChow
 
-class Trump:
-    def __init__(self,tValue=0):
-        self.tValue = tValue
+class Trump(BaseComb):
+    def __init__(self,bValue=0):
+        super(Trump,self).__init__(bValue)
 
+class Kong(BaseComb):
+    def __init__(self,bValue=0,isExposed=True):
+        super(Kong,self).__init__(bValue)
+        self.isExposed = isExposed
+
+class HandTiles:
+    def __init__(self,tiles):
+        self.tiles = tiles[:]
+        self.drawSelf = False
     
+    def getPoints(self):
+        return self.tilePoints
+    
+            
         
 dictMTile = {0:'1C',1:'2C',2:'3C',3:'4C',4:'5C',5:'6C',6:'7C',7:'8C',8:'9C',
          10:'1D',11:'2D',12:'3D',13:'4D',14:'5D',15:'6D',16:'7D',17:'8D',18:'9D',
@@ -172,11 +187,11 @@ if __name__ == '__main__':
 ##            continue
 ##        print i+1,MTile[i],i
         
-    t = Character(dictMTile[0],0)
+#    t = Character(dictMTile[0],0)
 ##    randtilea = ['EW','EW','EW','SW','SW','SW','WW','WW','WW','NW','NW','NW','RD','RD']
     randtile00 = [30,30,30,31,31,31,32,32,32,33,33,33,35,35]
     randtile49 = [7,7,7,17,17,17,27,27,27,36,36,36,30,30]
     randtile48 = [1,2,3,12,13,14,23,24,25,26,26,26,13,13]
-    isWin(randtile49)
+#    isWin(randtile49)
     
      

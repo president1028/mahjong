@@ -2,7 +2,7 @@
 #coding=utf-8
 __metaclass__ = type
 
-#import MahjongClass as mc
+import MahjongClass as mc
 import MahjongTestCase as mtc
 import logging
 import logging.config
