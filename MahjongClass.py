@@ -42,6 +42,7 @@ class Flower(Tile):
 
 
 class BaseComb:
+    '''Triplet Sequence Trump Kong的基类，Sequence的Value为其中间的数  '''
     def __init__(self,bvalue = 0):
         self.bvalue = bvalue
 
@@ -68,11 +69,11 @@ class HandTiles:
     def __init__(self,tiles):
         self.tiles = tiles[:]
         self.drawSelf = False
+        self.tilePoints = ""
     
     def getPoints(self):
         return self.tilePoints
     
-            
         
 dictMTile = {0:'1C',1:'2C',2:'3C',3:'4C',4:'5C',5:'6C',6:'7C',7:'8C',8:'9C',
          10:'1D',11:'2D',12:'3D',13:'4D',14:'5D',15:'6D',16:'7D',17:'8D',18:'9D',

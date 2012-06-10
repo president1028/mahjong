@@ -4,6 +4,7 @@ __metaclass__ = type
 
 import MahjongClass as mc
 import MahjongTestCase as mtc
+import MStandardScore as mss
 import logging
 import logging.config
 
@@ -65,7 +66,10 @@ def isKong(tilelist):
     return False
 
 def isDoubleOrCrossOrIncludeTripletSequence(tilelist):
-    '''例如 15,16,16,16,16,17'''
+    '''例如 
+    1,1,2,2,3,3
+    1,2,2,3,3,4
+    15,16,16,16,16,17'''
     if len(tilelist) == 6:
         if tilelist[0] + 2 == tilelist[1] + 2 ==  \
            tilelist[2] + 1 == tilelist[3] + 1 ==  \
@@ -94,6 +98,7 @@ def isCrossSequence9(tilelist):
     return False
 
 def isCrossSequence12(tilelist):
+    '''例如 1,2,3,2,3,4,3,4,5,4,5,6'''
     if len(tilelist) == 12:
         if tilelist[0] + 2 == tilelist[1] + 1 ==  \
            tilelist[2] + 1 == tilelist[3] ==  \
@@ -142,23 +147,37 @@ def findTrump(sortedTile,listToken=[]):
 #    pass
 
 
-def isWinBacktrack(sortedTile):
+def isWinBacktrack(sortedTile,mStandardScore):
     if len(sortedTile) == 0:
         return True
     else:
-        if isSequence(sortedTile[0:3]) or isTriplet(sortedTile[0:3]):
+        if isSequence(sortedTile[0:3]):
+            s = mc.Sequence(sortedTile[1])
+            mStandardScore.combList.append(s)
             del sortedTile[0:3]
-#            print sortedTile
-            return isWinBacktrack(sortedTile)
+            return isWinBacktrack(sortedTile,mStandardScore)
+        
+        elif isTriplet(sortedTile[0:3]):
+            t = mc.Triplet(sortedTile[1])
+            mStandardScore.combList.append(t)            
+            del sortedTile[0:3]
+            return isWinBacktrack(sortedTile,mStandardScore)
+        
         elif isDoubleOrCrossOrIncludeTripletSequence(sortedTile[0:6]):
+#            s = mc.Sequence()
+#            mStandardScore.combList.append(s)
+#            s = mc.Sequence()
+#            mStandardScore.combList.append(s)
             del sortedTile[0:6]
-            return isWinBacktrack(sortedTile)
+            return isWinBacktrack(sortedTile,mStandardScore)
+        
         elif isCrossSequence9(sortedTile[0:9]):
             del sortedTile[0:9]
-            return isWinBacktrack(sortedTile)
+            return isWinBacktrack(sortedTile,mStandardScore)
+        
         elif isCrossSequence12(sortedTile[0:12]):
             del sortedTile[0:12]
-            return isWinBacktrack(sortedTile)        
+            return isWinBacktrack(sortedTile,mStandardScore)        
         else:
             return False
         
@@ -187,11 +206,12 @@ def isWin(sortedTile,listToken):
     trumpToken = []
     findTrump(sortedTile,trumpToken)
     
+    mStandardScore = mss.MStandardScore()
      
     for i in trumpToken:
         tiles = sortedTile[:]
         del tiles[i:i+2]
-        if (isWinBacktrack(tiles)):
+        if (isWinBacktrack(tiles,mStandardScore)):
             tiles = sortedTile[:]
 #            print tiles[i],tiles[i+1],
             del tiles[i:i+2]
@@ -344,16 +364,6 @@ def changeStrListToIntList(strlist):
 def findMeld(tile,start,end):
     pass
 
-
-
-
-def isPong():
-    pass
-def iskong():
-    '''这个表示杠这个状态 而不是名字 杠!'''
-    pass
-def isChow():
-    pass
 
 
 def scoreTile49(sortedTile,listToken):
