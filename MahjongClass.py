@@ -85,114 +85,15 @@ dictPoints = {'SIFENGHUI':'四风会'}
 SiFengHui = re.compile('\d{28}')
 
 
-def isWin(sortedTile):
-    '''确认是否和牌
-       2012-3-13 功能1,判断和牌的普通牌型
-       最终功能,需要将解析出来的刻子 顺子 杠 将牌解析出来
-    '''
-    flagT = 1  # 将牌/刻子/杠标志
-    flagS = 1  # 顺子标志
-    numTr = 0 # 将牌个数
-    tile = sortedTile[0]
-    for i in range(1,len(sortedTile)):
-        
-        if tile != sortedTile[i]:
-            if flagT == 2:
-                flagT = 1
-                numTr += 1
-                print 'trump',tile
-            elif flagT == 3:
-                flagT = 1
-                print 'triplet:',tile
-            elif flagT == 4:
-                flagT = 1
-                print 'kong:',tile
-            if flagS == 3:
-                flagS = 1
-                print 'sequence',tile
-        
-        if tile == sortedTile[i]:
-            flagT += 1
-
-        if tile + 1 == sortedTile[i]:
-            flagS += 1
-            
-        tile = sortedTile[i]
-        i += 1
-
-    if flagT == 2:
-        flagT = 1
-        numTr += 1
-        print 'trump',tile
-    elif flagT == 3:
-        flagT = 1
-        print 'triplet:',tile
-    elif flagT == 4:
-        flagT = 1
-        print 'kong:',tile
-    if flagS == 3:
-        flagS = 1
-        print 'sequence',tile
-            
-    if flagT == 1 and flagS == 1 and numTr == 1:
-        print '确实为和牌,让我们看看有几番...'
-    else:
-        print '小子,诈和??!!'
-
-def isSevenPairs(sortedTile):
-    '''判断是否为七对'''
-    pass
-
-def isTheThirteenOrphans(sortedTile):
-    '''判断是否为十三幺'''
-    pass
-
-def isNotSequence(sortedTile):
-    '''判断是否为全不靠'''
-    pass
-
-
-def isPong():
-    pass
-def isKong():
-    pass
-def isChow():
-    pass
-
-
-
-def scoreTile49(sortedTile):
-    '''49-碰碰和'''
-    
-    pass
-
-
-
-
-
-def shuffleTile(randtile):
-    pass
-
-def sortTile(randtile):
-    randtile.sort()
-    return randtile
-
-
-def reviseTile(randtile):
-    pass
 
 if __name__ == '__main__':
 
-##    for i in range(48):
-##        if i==9 or i==19 or i==29 or i==37 or i==38 or i ==39:
-##            continue
-##        print i+1,MTile[i],i
-        
-#    t = Character(dictMTile[0],0)
-##    randtilea = ['EW','EW','EW','SW','SW','SW','WW','WW','WW','NW','NW','NW','RD','RD']
     randtile00 = [30,30,30,31,31,31,32,32,32,33,33,33,35,35]
     randtile49 = [7,7,7,17,17,17,27,27,27,36,36,36,30,30]
     randtile48 = [1,2,3,12,13,14,23,24,25,26,26,26,13,13]
-#    isWin(randtile49)
+
+    b = []
+    
+
     
      
